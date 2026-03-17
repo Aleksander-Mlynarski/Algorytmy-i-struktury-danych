@@ -1,185 +1,33 @@
-# 📌 Implementacja klasy `macierz` w Pythonie
-
-## Opis projektu
-
-Celem projektu jest implementacja klasy reprezentującej **macierz dwuwymiarową** w języku Python, z dostępem do elementów w stylu języka C:
-
-```python
-m[i][j]
-```
-
-Klasa umożliwia wykonywanie podstawowych operacji na macierzach:
-
-* dodawanie (`+`)
-* mnożenie macierzowe (`*`)
-* porównywanie (`==`)
-* dostęp do elementów (`[]`)
-* wypisywanie macierzy (`print`)
-
-Dodatkowo zaimplementowana jest funkcja transponująca macierz.
-
----
-
-## ⚙️ Funkcjonalności
-
-### 🔹 Konstruktor
-
-Tworzenie macierzy możliwe jest na dwa sposoby:
-
-1. **Na podstawie listy list:**
-
-```python
-m = macierz([[1, 2], [3, 4]])
-```
-
-2. **Na podstawie rozmiaru (wiersze, kolumny) oraz wartości domyślnej:**
-
-```python
-m = macierz((2, 3), 1)  # macierz 2x3 wypełniona jedynkami
-```
-
----
-
-### 🔹 Dostęp do elementów
-
-```python
-m[i][j]
-```
-
----
-
-### 🔹 Operacje na macierzach
-
-* **Dodawanie:**
-
-```python
-m1 + m2
-```
-
-* **Mnożenie macierzowe:**
-
-```python
-m1 * m2
-```
-
-* **Porównanie:**
-
-```python
-m1 == m2
-```
-
----
-
-### 🔹 Wypisywanie macierzy
-
-```python
-print(m)
-```
-
-Format:
-
-```
-| 1 0 2 |
-|-1 3 1 |
-```
-
----
-
-### 🔹 Rozmiar macierzy
-
-```python
-m.size()
-```
-
-Zwraca:
-
-```python
-(liczba_wierszy, liczba_kolumn)
-```
-
----
-
-### 🔹 Transpozycja macierzy
-
-Zaimplementowana jako osobna funkcja:
-
-```python
-def transpose(m):
-    ...
-```
-
----
-
-## ▶️ Przykładowe użycie
-
-```python
-def main():
-    m1 = macierz([[1, 0, 2], [-1, 3, 1]])
-
-    # transpozycja
-    print(transpose(m1))
-
-    # dodawanie
-    m2 = macierz((2, 3), 1)
-    print(m1 + m2)
-
-    # mnożenie
-    m3 = macierz([[3, 1], [2, 1], [1, 0]])
-    print(m1 * m3)
-```
-
----
-
-## 📤 Wynik działania programu
-
-Program wypisuje **wyłącznie trzy macierze wynikowe**:
-
-1. transpozycję
-2. sumę
-3. wynik mnożenia
-
-Bez dodatkowych komunikatów.
-
----
-
-## 🧩 Wymagania implementacyjne
-
-Klasa powinna implementować następujące metody specjalne:
-
-* `__init__`
-* `__getitem__`
-* `__add__`
-* `__mul__`
-* `__eq__`
-* `__str__`
-
-Dodatkowo:
-
-* metoda `size()`
-* prywatne pole `__matrix` przechowujące dane
-
----
-
-## 📁 Struktura projektu
-
-```
-.
-├── macierz.py
-└── README.md
-```
-
----
-
-## 🚀 Uruchomienie
-
-```bash
-python macierz.py
-```
-
----
-
-## 📝 Uwagi
-
-* Operacje sprawdzają zgodność wymiarów macierzy.
-* Wynikiem operacji jest nowy obiekt klasy `macierz`.
-* Wewnętrzna reprezentacja danych jest ukryta (enkapsulacja).
+# Jednokierunkowa Lista Wiązana (Singly Linked List) w Pythonie
+
+## O projekcie
+Projekt zawiera w pełni obiektową implementację podstawowej struktury danych – **jednokierunkowej listy wiązanej**, zrealizowaną od zera w języku Python. 
+
+W Pythonie referencje do obiektów pełnią funkcję wskaźników znanych z języków takich jak C czy C++. Architektura opiera się na dwóch głównych klasach:
+* `element` – reprezentującej pojedynczy węzeł listy, przechowujący dane oraz referencję do kolejnego węzła (`next`).
+* `my_List` – strukturze nadrzędnej, zarządzającej węzłami poprzez wskazanie na początek listy (`head`).
+
+## Zaimplementowane funkcjonalności
+
+Struktura udostępnia zestaw standardowych metod do zarządzania danymi:
+
+### Transformatory (Modyfikacja struktury)
+* `add(data)` – wstawia nowy element na początek listy (złożoność $O(1)$).
+* `append(data)` – iteruje po strukturze i dołącza nowy element na jej koniec.
+* `remove()` – bezpiecznie usuwa pierwszy element z listy.
+* `remove_end()` – iteruje do przedostatniego węzła i bezpiecznie usuwa element z końca listy. Odporna na wywołania na pustej liście.
+* `destroy_list()` – niszczy całą listę. Wykorzystuje wbudowany Garbage Collector Pythona poprzez ustawienie `head` na `None`.
+
+### Obserwatory (Odczyt stanu)
+* `is_empty()` – sprawdza, czy w liście znajdują się jakiekolwiek elementy.
+* `length()` – iteruje po liście i zwraca aktualną liczbę elementów.
+* `get()` – zwraca surowe dane z pierwszego elementu, ukrywając wewnętrzną reprezentację węzła.
+
+## Przykład użycia (Testy integracyjne)
+Kod zawiera wbudowany scenariusz testowy operujący na danych polskich uczelni wyższych. Dzięki nadpisaniu tzw. metody magicznej `__str__`, wywołanie `print(lista)` generuje czytelną, wizualną reprezentację struktury:
+
+```text
+-> ('UP', 'Poznań', 1919)
+-> ('UW', 'Warszawa', 1915)
+-> ('PG', 'Gdańsk', 1945)
+-> ('AGH', 'Kraków', 1919)
