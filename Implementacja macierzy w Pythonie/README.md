@@ -1,185 +1,42 @@
-# 📌 Implementacja klasy `macierz` w Pythonie
+# Obiektowa Implementacja Macierzy (2D Array) w Pythonie
 
-## Opis projektu
+## O projekcie
+Projekt przedstawia implementację dwuwymiarowej tablicy (macierzy) od zera, zrealizowaną w pełni obiektowo. Zamiast korzystać z gotowych bibliotek naukowych (jak NumPy), struktura została zbudowana z wykorzystaniem mechanizmów wbudowanych języka Python. 
 
-Celem projektu jest implementacja klasy reprezentującej **macierz dwuwymiarową** w języku Python, z dostępem do elementów w stylu języka C:
+Kluczowym aspektem projektu jest zastosowanie **metod magicznych (dunder methods)**, co pozwala na naturalne i intuicyjne operowanie na macierzach przy pomocy standardowych operatorów matematycznych, upodabniając składnię do rozwiązań znanych z języka C/C++.
 
-```python
-m[i][j]
-```
+## Zaimplementowane funkcjonalności
 
-Klasa umożliwia wykonywanie podstawowych operacji na macierzach:
+### 1. Przeciążanie operatorów (Magic Methods)
+Klasa `Matrix` pozwala na wykonywanie klasycznych operacji algebraicznych z wykorzystaniem standardowych operatorów:
+* `__add__ (+)` – dodawanie dwóch macierzy o zgodnych wymiarach.
+* `__mul__ (*)` – właściwe mnożenie macierzowe (iloczyn macierzy), z walidacją zgodności liczby kolumn pierwszej macierzy z liczbą wierszy drugiej.
+* `__eq__ (==)` – głębokie porównywanie wartości wszystkich elementów obu macierzy.
+* `__getitem__ ([])` – bezpośredni dostęp do elementów poprzez indeksowanie w stylu C: `macierz[wiersz][kolumna]`.
+* `__str__` – formatowanie obiektu do postaci czytelnego ciągu znaków, pozwalające na eleganckie wyświetlanie struktury w konsoli przy użyciu instrukcji `print()`.
 
-* dodawanie (`+`)
-* mnożenie macierzowe (`*`)
-* porównywanie (`==`)
-* dostęp do elementów (`[]`)
-* wypisywanie macierzy (`print`)
+### 2. Konstruktor (Inicjalizacja)
+Metoda `__init__` implementuje wzorzec zachowania zbliżony do przeciążania konstruktorów w innych językach. Przyjmuje dwa typy argumentów inicjalizujących:
+* **Lista list (`List[List[int]]`)** – tworzy macierz bezpośrednio z podanych wartości.
+* **Krotka rozmiarów (`Tuple[int, int]`)** – tworzy macierz o podanych wymiarach i wypełnia ją wartością domyślną (standardowo `0`, z możliwością podania własnej).
 
-Dodatkowo zaimplementowana jest funkcja transponująca macierz.
+### 3. Enkapsulacja i Hermetyzacja
+Wewnętrzna struktura przechowująca dane (`__matrix`) została sprywatyzowana (name mangling). Dostęp do niej oraz jej modyfikacja z zewnątrz odbywa się wyłącznie poprzez zdefiniowany interfejs publiczny klasy (np. metody `size()` oraz przeciążony operator indeksowania).
 
----
+### 4. Transpozycja Macierzy
+Projekt zawiera zewnętrzną funkcję `transpose(m: Matrix)`, która realizuje operację transpozycji. Funkcja ta celowo operuje wyłącznie na publicznym interfejsie obiektu (`size()` oraz `[]`), demonstrując prawidłowe podejście do manipulacji ukrytymi danymi struktury.
 
-## ⚙️ Funkcjonalności
+## Przykładowe użycie i formatowanie wyjścia
 
-### 🔹 Konstruktor
+Zaimplementowana metoda `__str__` dba o odpowiednie wyrównanie znaków. Zgodnie ze scenariuszem testowym, kod dla operacji transpozycji, dodawania i mnożenia generuje czysty wynik bez zbędnych opisów:
 
-Tworzenie macierzy możliwe jest na dwa sposoby:
+```text
+|  1 -1 |
+|  0  3 |
+|  2  1 |
 
-1. **Na podstawie listy list:**
+|  2  1  3 |
+|  0  4  2 |
 
-```python
-m = macierz([[1, 2], [3, 4]])
-```
-
-2. **Na podstawie rozmiaru (wiersze, kolumny) oraz wartości domyślnej:**
-
-```python
-m = macierz((2, 3), 1)  # macierz 2x3 wypełniona jedynkami
-```
-
----
-
-### 🔹 Dostęp do elementów
-
-```python
-m[i][j]
-```
-
----
-
-### 🔹 Operacje na macierzach
-
-* **Dodawanie:**
-
-```python
-m1 + m2
-```
-
-* **Mnożenie macierzowe:**
-
-```python
-m1 * m2
-```
-
-* **Porównanie:**
-
-```python
-m1 == m2
-```
-
----
-
-### 🔹 Wypisywanie macierzy
-
-```python
-print(m)
-```
-
-Format:
-
-```
-| 1 0 2 |
-|-1 3 1 |
-```
-
----
-
-### 🔹 Rozmiar macierzy
-
-```python
-m.size()
-```
-
-Zwraca:
-
-```python
-(liczba_wierszy, liczba_kolumn)
-```
-
----
-
-### 🔹 Transpozycja macierzy
-
-Zaimplementowana jako osobna funkcja:
-
-```python
-def transpose(m):
-    ...
-```
-
----
-
-## ▶️ Przykładowe użycie
-
-```python
-def main():
-    m1 = macierz([[1, 0, 2], [-1, 3, 1]])
-
-    # transpozycja
-    print(transpose(m1))
-
-    # dodawanie
-    m2 = macierz((2, 3), 1)
-    print(m1 + m2)
-
-    # mnożenie
-    m3 = macierz([[3, 1], [2, 1], [1, 0]])
-    print(m1 * m3)
-```
-
----
-
-## 📤 Wynik działania programu
-
-Program wypisuje **wyłącznie trzy macierze wynikowe**:
-
-1. transpozycję
-2. sumę
-3. wynik mnożenia
-
-Bez dodatkowych komunikatów.
-
----
-
-## 🧩 Wymagania implementacyjne
-
-Klasa powinna implementować następujące metody specjalne:
-
-* `__init__`
-* `__getitem__`
-* `__add__`
-* `__mul__`
-* `__eq__`
-* `__str__`
-
-Dodatkowo:
-
-* metoda `size()`
-* prywatne pole `__matrix` przechowujące dane
-
----
-
-## 📁 Struktura projektu
-
-```
-.
-├── macierz.py
-└── README.md
-```
-
----
-
-## 🚀 Uruchomienie
-
-```bash
-python macierz.py
-```
-
----
-
-## 📝 Uwagi
-
-* Operacje sprawdzają zgodność wymiarów macierzy.
-* Wynikiem operacji jest nowy obiekt klasy `macierz`.
-* Wewnętrzna reprezentacja danych jest ukryta (enkapsulacja).
+|  5  1 |
+|  4  2 |
