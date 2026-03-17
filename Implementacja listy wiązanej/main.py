@@ -1,88 +1,107 @@
-from typing import List, Tuple
-
-class Matrix:
-    def __init__(self, initializer: Tuple[int, int] | List[List[int]],default_val: int = 0):
-        if isinstance(initializer, tuple):
-            self.r = initializer[0]
-            self.c = initializer[1]
-            self.__matrix = []
-            for i in range(self.r):
-                self.__matrix.append([])
-                for j in range(self.c):
-                    self.__matrix[i].append(default_val)
+class element:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+    
+class my_List:
+    def __init__(self, head = None):
+        self.head = head
+    
+    def create_list(self):
+        pass
+        
+    def destroy_list(self):
+        self.head = None
+        
+    def add(self,data):
+        el = element(data)
+        el.next = self.head
+        self.head = el
+        
+    def append(self, data):
+        if self.head is not None:
+            current = self.head
+            while current.next is not None:
+                current = current.next
+            current.next = element(data)
         else:
-            self.r = len(initializer)
-            self.c = len(initializer[0])
-            self.__matrix = initializer        
-    def __add__(self, other: "Matrix"):
-        if self.size() != other.size():
-            raise ValueError
-        add_result = []
-        for r in range(self.r):
-            add_result.append([])
-            for c in range(self.c):
-                add_result[r].append(self[r][c] + other[r][c])
-        return Matrix(add_result)
-        
-    def __mul__(self,other: "Matrix"):
-        if self.c != other.r:
-            raise ValueError
-        mul_result = []
-        for r in range(self.r):
-            mul_result.append([])
-            for c in range(other.c):
-                s=0
-                for d in range(self.c):
-                    s+= self[r][d] * other[d][c]
-                mul_result[r].append(s)
-        return Matrix(mul_result)
-        
-    def __eq__(self,other: "Matrix"):
-        for r in range(self.r):
-            for c in range(self.c):
-                if (self[r][c] != other[r][c]):
-                    return False
-        return True
-                
-    def __getitem__(self, indeks):
-        return self.__matrix[indeks]
+            self.head = element(data)
+            
+    def remove(self):
+        if self.head is not None:
+            self.head = self.head.next
     
-    def size(self):
-        row = len(self.__matrix)
-        col = len(self.__matrix[0])
-        return row,col
+    def remove_end(self):
+        if self.head is None:
+            pass
+
+        elif self.head.next is None:
+            self.head = None
+        
+        else:
+            current = self.head
+            while current.next.next is not None:
+                current = current.next
+            current.next = None
+
+    def is_empty(self):
+        if self.head is None:
+            return True
+        else:
+            return False
     
+    def length(self):
+        n = 0
+        current = self.head
+        while current is not None:
+            n+=1
+            current = current.next
+        return n
+    
+    def get(self):
+        return self.head.data
+        
     def __str__(self):
         text = ""
-        for r in range(self.r):
-            text += "|"
-            for c in range(self.c):
-                text += f"{self[r][c]:2}" + " "
-            text += "|\n"
+        current = self.head
+        while current is not None:
+            text += "-> " + str(current.data) + "\n"
+            current = current.next
         return text
-                
-
-def transpose(m: Matrix):
-    r,c = m.size()
-    transpose_result = []
-    for i in range(c):
-        transpose_result.append([])
-        for j in range(r):
-            transpose_result[i].append(m[j][i])
-    return Matrix(transpose_result)
+                    
+    
     
 if __name__ == '__main__':
-    m1 = Matrix(
-    [ [1, 0, 2],
-      [-1, 3, 1] ]
-    )
-    m2 = Matrix(
-    [ [3, 1],
-      [2, 1],
-      [1, 0]]
-    )
-    m3 = Matrix((2,3),1)
+    data = [('AGH', 'Kraków', 1919),
+    ('UJ', 'Kraków', 1364),
+    ('PW', 'Warszawa', 1915),
+    ('UW', 'Warszawa', 1915),
+    ('UP', 'Poznań', 1919),
+    ('PG', 'Gdańsk', 1945)]
+    
+    uczelnie = my_List()
+        
+    for i in range(3):
+        uczelnie.append(data[i])
+    for i in range(3, len(data)):
+        uczelnie.add(data[i])
+    print(uczelnie)
+    
+    print(uczelnie.length(), "\n")
+    
+    uczelnie.remove()
+    print(uczelnie.get(), "\n")
+    
+    uczelnie.remove_end()
+    print(uczelnie)
 
-    print(transpose(m1))
-    print(m1+m3)
-    print(m1*m2)
+    uczelnie.destroy_list()
+    print(uczelnie.is_empty(), "\n")
+ 
+    uczelnie.remove()
+    uczelnie.remove_end()
+    
+    uczelnie.append(data[0])
+    uczelnie.remove_end()
+    print(uczelnie.is_empty())
+        
